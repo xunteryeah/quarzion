@@ -25,39 +25,31 @@ function sha256(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
-function qwenSearchRequest(model, prompt, maxOutputTokens) {
-  return {
-    model,
-    input: { messages: [{ role: "user", content: prompt }] },
-    parameters: {
-      result_format: "message",
-      max_tokens: maxOutputTokens,
-      enable_search: true,
-      search_options: { forced_search: true, enable_source: true, search_strategy: "turbo" },
-    },
-  };
-}
-
 function chatCompletionsRequest(model, prompt, maxOutputTokens) {
   return {
     model,
     messages: [{ role: "user", content: prompt }],
     max_completion_tokens: maxOutputTokens,
+    thinking: { type: "enabled" },
+    reasoning_effort: "low",
   };
 }
 
 function responsesRequest(capability, mode, prompt, maxOutputTokens) {
   const request = { model: capability.model, input: prompt, max_output_tokens: maxOutputTokens };
   if (capability.provider === "doubao") request.thinking = { type: "disabled" };
+  if (capability.provider === "qwen") request.reasoning = { effort: "none" };
+  if (capability.provider === "deepseek") request.reasoning = { effort: "low" };
   if (mode === "web_search") {
     request.tools = [{ type: "web_search" }];
-    request.tool_choice = capability.provider === "deepseek" ? { type: "web_search" } : "required";
+    if (capability.provider === "qwen") request.instructions = "这是联网监测任务。回答前必须先调用 web_search 工具检索公开网页；答案必须基于检索结果，并列出可核验的来源。不要仅凭模型记忆回答。";
+    if (capability.provider === "deepseek") request.tool_choice = { type: "web_search" };
+    if (capability.provider === "doubao") request.tool_choice = "required";
   }
   return request;
 }
 
 function requestFor(capability, mode, prompt, maxOutputTokens) {
-  if (capability.provider === "qwen" && mode === "web_search") return qwenSearchRequest(capability.model, prompt, maxOutputTokens);
   if (capability.protocol[mode] === "chat_completions") return chatCompletionsRequest(capability.model, prompt, maxOutputTokens);
   return responsesRequest(capability, mode, prompt, maxOutputTokens);
 }
@@ -98,7 +90,7 @@ export async function executeProviderTask(task, options = {}) {
   const capability = resolveCapability(provider, model, mode, environment);
   const key = providerKey(provider, environment);
   if (!key) throw new ProviderRequestError(`${capability.displayName} API Key 未配置`, { provider, retryable: false });
-  const maxOutputTokens = Math.max(64, Math.min(8192, Number(task.maxOutputTokens || 2048)));
+  const maxOutputTokens = Math.max(64, Math.min(16384, Number(task.maxOutputTokens || 8192)));
   const requestBody = requestFor(capability, mode, String(task.queryText || "").trim(), maxOutputTokens);
   const requestJson = stableJson(requestBody);
   const started = performance.now();
@@ -141,6 +133,14 @@ export async function executeProviderTask(task, options = {}) {
     requestSha256: sha256(requestJson),
     providerResponseSha256: sha256(exchange.raw),
     rawResponseJson: exchange.raw,
-    capabilitySnapshot: { provider, model: capability.model, tier: capability.tier, mode, protocol: capability.protocol[mode], supports: capability.supports },
+    capabilitySnapshot: {
+      provider,
+      model: capability.model,
+      tier: capability.tier,
+      mode,
+      protocol: capability.protocol[mode],
+      supports: capability.supports,
+      searchPolicy: mode === "web_search" ? (provider === "qwen" ? "model_decides_with_mandatory_instruction" : "required_tool_choice") : "disabled",
+    },
   };
 }

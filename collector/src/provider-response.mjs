@@ -38,6 +38,7 @@ function collectCitationCandidates(body) {
   for (const item of output) {
     const sources = item?.action?.sources || item?.sources;
     if (Array.isArray(sources)) candidates.push(...sources);
+    if (item?.type === "web_search_call" && item?.action?.url) candidates.push(item.action);
     if (!Array.isArray(item?.content)) continue;
     for (const part of item.content) {
       if (Array.isArray(part?.annotations)) candidates.push(...part.annotations);
@@ -84,4 +85,3 @@ export function responseRequestId(body, headers) {
       || "",
   ).trim() || null;
 }
-

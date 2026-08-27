@@ -21,7 +21,7 @@ const definitions = {
     tiers: ["flagship", "secondary"],
     endpoints: {
       direct: "https://dashscope.aliyuncs.com/compatible-mode/v1/responses",
-      web_search: "https://dashscope.aliyuncs.com/api/v1/services/aigc/text-generation/generation",
+      web_search: "https://dashscope.aliyuncs.com/compatible-mode/v1/responses",
     },
   },
   deepseek: {
@@ -48,7 +48,6 @@ function endpointsFor(provider, model) {
 }
 
 function protocolFor(provider, model, mode) {
-  if (provider === "qwen" && mode === "web_search") return "dashscope_generation";
   if (provider === "deepseek" && model === "deepseek-v4-pro" && mode === "direct") return "chat_completions";
   return "responses";
 }

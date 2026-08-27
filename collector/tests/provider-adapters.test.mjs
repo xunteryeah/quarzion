@@ -45,7 +45,7 @@ test("豆包 Responses API 解析回答、引用、搜索调用、Token 和请�
   assert.equal(result.providerRequestId, "ark-request-1");
 });
 
-test("千问联网使用原生 DashScope 搜索并解析 search_info", async () => {
+test("千问联网使用 Responses API 内置搜索并解析搜索来源", async () => {
   let sent;
   const result = await executeProviderTask({ platform: "qwen", modelVersion: "qwen3.7-plus", responseMode: "web_search", queryText: "最新腕表行业趋势" }, {
     environment,
@@ -53,16 +53,19 @@ test("千问联网使用原生 DashScope 搜索并解析 search_info", async () 
       sent = { url, body: JSON.parse(init.body) };
       return response({
         request_id: "qwen-request-1",
-        output: {
-          choices: [{ message: { content: "行业趋势回答", search_info: { search_results: [{ url: "https://example.cn/report", title: "行业趋势", snippet: "摘要" }] } } }],
-        },
+        output: [
+          { type: "web_search_call", action: { url: "https://example.cn/report", title: "行业趋势", snippet: "摘要" } },
+          { type: "message", content: [{ type: "output_text", text: "行业趋势回答" }] },
+        ],
         usage: { input_tokens: 15, output_tokens: 25 },
       });
     },
   });
-  assert.match(sent.url, /text-generation\/generation/);
-  assert.equal(sent.body.parameters.enable_search, true);
-  assert.equal(sent.body.parameters.search_options.forced_search, true);
+  assert.match(sent.url, /compatible-mode\/v1\/responses/);
+  assert.deepEqual(sent.body.tools, [{ type: "web_search" }]);
+  assert.deepEqual(sent.body.reasoning, { effort: "none" });
+  assert.equal(sent.body.tool_choice, undefined);
+  assert.match(sent.body.instructions, /必须先调用 web_search/);
   assert.equal(result.rawText, "行业趋势回答");
   assert.equal(result.searchPerformed, true);
   assert.equal(result.citations[0].snippet, "摘要");
@@ -105,7 +108,8 @@ test("DeepSeek V4 Pro 直答使用官方 Chat Completions 而不是不支持的 
   });
   assert.match(sent.url, /chat\/completions$/);
   assert.equal(sent.body.messages[0].role, "user");
-  assert.equal(sent.body.max_completion_tokens, 2048);
+  assert.equal(sent.body.max_completion_tokens, 8192);
+  assert.equal(sent.body.reasoning_effort, "low");
   assert.equal(result.rawText, "劳力士、欧米茄与百达翡丽是常见高端腕表品牌。");
   assert.equal(result.capabilitySnapshot.protocol, "chat_completions");
 });
