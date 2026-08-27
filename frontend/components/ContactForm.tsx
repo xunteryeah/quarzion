@@ -39,7 +39,7 @@ export function ContactForm() {
       <label>公司<input name="company" autoComplete="organization" required minLength={2} maxLength={120} placeholder="公司或品牌名称" /></label>
       <label>工作邮箱<input name="email" type="email" inputMode="email" autoComplete="email" required maxLength={160} placeholder="name@company.com" /></label>
       <label>电话（选填）<input name="phone" type="tel" inputMode="tel" autoComplete="tel" maxLength={40} placeholder="方便联系的电话号码" /></label>
-      <label className="contact-message">你的需求<textarea name="message" required minLength={10} maxLength={2000} rows={6} placeholder="例如：希望先监测一个品牌在豆包、腾讯元宝和 DeepSeek 的表现，并建立优化前基线。" /></label>
+      <label className="contact-message">你的需求<textarea name="message" required minLength={10} maxLength={2000} rows={6} placeholder="例如：希望先监测一个品牌在豆包、千问和 DeepSeek 的表现，并建立优化前基线。" /></label>
       <label className="contact-honeypot" aria-hidden="true">网站<input name="website" tabIndex={-1} autoComplete="off" /></label>
       <label className="contact-consent"><input name="consent" type="checkbox" required /> <span>我同意 Quarzion 使用以上信息回复本次咨询。</span></label>
     </div>

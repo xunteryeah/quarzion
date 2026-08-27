@@ -1,0 +1,8 @@
+[Unit]
+Description=Generate due Quarzion official API monitoring runs
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/docker exec quarzion-frontend node -e "fetch('http://127.0.0.1:3000/api/internal/schedule',{method:'POST',headers:{authorization:'Bearer '+process.env.QUARZION_SCHEDULER_KEY,'content-type':'application/json'},body:'{}'}).then(async r=>{const text=await r.text();console.log(text);if(!r.ok)process.exit(1)}).catch(e=>{console.error(e.message);process.exit(1)})"

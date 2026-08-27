@@ -47,7 +47,7 @@ test("联系表单校验、保存、隐私哈希和应用限流", { timeout: 25_
     const invalid = await post(`${base}/api/contact`, { name: "A", company: "", email: "bad", message: "短", consent: false });
     assert.equal(invalid.status, 400);
 
-    const payload = { name: "张三", company: "示例客户公司", email: "contact@example.com", phone: "13800000000", message: "希望监测豆包、腾讯元宝和 DeepSeek 的品牌可见度。", consent: true };
+    const payload = { name: "张三", company: "示例客户公司", email: "contact@example.com", phone: "13800000000", message: "希望监测豆包、千问和 DeepSeek 的品牌可见度。", consent: true };
     for (let index = 0; index < 5; index += 1) {
       const response = await post(`${base}/api/contact`, { ...payload, email: `contact${index}@example.com` });
       assert.equal(response.status, 201, await response.text());

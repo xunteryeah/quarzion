@@ -37,6 +37,22 @@ const definitions = {
   },
 };
 
+function endpointsFor(provider, model) {
+  const endpoints = { ...definitions[provider].endpoints };
+  // DeepSeek Responses API currently supports V4 Flash only. V4 Pro direct
+  // monitoring therefore uses the official Chat Completions endpoint.
+  if (provider === "deepseek" && model === "deepseek-v4-pro") {
+    endpoints.direct = "https://api.deepseek.com/chat/completions";
+  }
+  return endpoints;
+}
+
+function protocolFor(provider, model, mode) {
+  if (provider === "qwen" && mode === "web_search") return "dashscope_generation";
+  if (provider === "deepseek" && model === "deepseek-v4-pro" && mode === "direct") return "chat_completions";
+  return "responses";
+}
+
 function configuredModels(provider, environment) {
   const definition = definitions[provider];
   return String(environment[definition.modelEnv] || definition.defaultModels.join(","))
@@ -58,7 +74,11 @@ export function providerCatalog(environment = process.env) {
       displayName: definition.displayName,
       model,
       tier: definition.tiers[index] || `tier_${index + 1}`,
-      endpoint: definition.endpoints,
+      endpoint: endpointsFor(provider, model),
+      protocol: {
+        direct: protocolFor(provider, model, "direct"),
+        web_search: protocolFor(provider, model, "web_search"),
+      },
       supports: { direct: true, web_search: supportsWebSearch(provider, index) },
       keyNames: definition.keyNames,
     }));
@@ -83,4 +103,3 @@ export function resolveCapability(provider, model, mode, environment = process.e
 export function publicCapabilityMatrix(environment = process.env) {
   return providerCatalog(environment).map(({ keyNames, endpoint, ...item }) => item);
 }
-

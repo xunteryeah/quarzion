@@ -7,7 +7,7 @@ release_dir="${1:-${QUARZION_RELEASE_DIR:-}}"
 release_dir="$(realpath "${release_dir}")"
 [[ "${release_dir}" == "${quarzion_root}/releases/"* ]] || { echo "Release path is outside ${quarzion_root}/releases" >&2; exit 2; }
 
-for file in ops/docker-compose.p1.yml database/migrations/0003_p1_collection.sql collector/Dockerfile collector/package-lock.json P1_REAL_COLLECTION_TASKS.md; do
+for file in ops/docker-compose.p1.yml database/migrations/0005_scheduler.sql collector/Dockerfile collector/package-lock.json ops/quarzion-scheduler.service ops/quarzion-scheduler.timer P1_REAL_COLLECTION_TASKS.md; do
   [[ -f "${release_dir}/${file}" ]] || { echo "Missing P1 release file: ${file}" >&2; exit 1; }
 done
 
@@ -19,8 +19,8 @@ collector_image="${QUARZION_COLLECTOR_IMAGE:-$(value_of QUARZION_COLLECTOR_IMAGE
 [[ -n "${collector_image}" ]] && docker image inspect "${collector_image}" >/dev/null 2>&1 || { echo "P1 collector image is missing: ${collector_image:-unset}" >&2; exit 1; }
 
 available_kb="$(awk '/MemAvailable:/ {print $2}' /proc/meminfo)"
-if [[ "${ENABLE_P1_COLLECTOR:-NO}" == "YES" && "${available_kb}" -lt 1500000 ]]; then
-  echo "Not enough available memory to safely start the browser collector" >&2
+if [[ "${ENABLE_P1_COLLECTOR:-NO}" == "YES" && "${available_kb}" -lt 500000 ]]; then
+  echo "Not enough available memory to safely start the official API worker" >&2
   exit 1
 fi
 

@@ -89,3 +89,23 @@ test("DeepSeek Flash Responses API 记录原生搜索调用", async () => {
   assert.match(result.requestSha256, /^[a-f0-9]{64}$/);
   assert.match(result.providerResponseSha256, /^[a-f0-9]{64}$/);
 });
+
+test("DeepSeek V4 Pro 直答使用官方 Chat Completions 而不是不支持的 Responses", async () => {
+  let sent;
+  const result = await executeProviderTask({ platform: "deepseek", modelVersion: "deepseek-v4-pro", responseMode: "direct", queryText: "高端腕表品牌有哪些？" }, {
+    environment,
+    fetchImpl: async (url, init) => {
+      sent = { url, body: JSON.parse(init.body) };
+      return response({
+        id: "deepseek-chat-1",
+        choices: [{ message: { content: "劳力士、欧米茄与百达翡丽是常见高端腕表品牌。" } }],
+        usage: { prompt_tokens: 9, completion_tokens: 13 },
+      });
+    },
+  });
+  assert.match(sent.url, /chat\/completions$/);
+  assert.equal(sent.body.messages[0].role, "user");
+  assert.equal(sent.body.max_completion_tokens, 2048);
+  assert.equal(result.rawText, "劳力士、欧米茄与百达翡丽是常见高端腕表品牌。");
+  assert.equal(result.capabilitySnapshot.protocol, "chat_completions");
+});

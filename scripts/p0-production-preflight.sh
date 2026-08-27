@@ -35,7 +35,7 @@ if [[ -f "${admin_password_file}" ]]; then
 fi
 secrets_mode="$(stat -c '%a' "${quarzion_root}/secrets" 2>/dev/null || true)"
 [[ "${secrets_mode}" == "750" || "${secrets_mode}" == "700" ]] || failures+=("permission:secrets-dir:${secrets_mode:-unknown}")
-for key in GEO_PROOF_INGEST_KEY QUARZION_AUDIT_SALT QUARZION_OUTBOX_ENCRYPTION_KEY QUARZION_DELIVERY_KEY QUARZION_APP_URL QUARZION_EMAIL_MODE; do
+for key in GEO_PROOF_INGEST_KEY QUARZION_SCHEDULER_KEY QUARZION_AUDIT_SALT QUARZION_OUTBOX_ENCRYPTION_KEY QUARZION_DELIVERY_KEY QUARZION_APP_URL QUARZION_EMAIL_MODE; do
   require_value "${key}"
 done
 
@@ -46,7 +46,7 @@ elif [[ "${email_mode}" != "queue_only" ]]; then
   failures+=("email-mode:${email_mode:-absent}")
 fi
 
-for key in GEO_PROOF_INGEST_KEY QUARZION_AUDIT_SALT QUARZION_OUTBOX_ENCRYPTION_KEY QUARZION_DELIVERY_KEY; do
+for key in GEO_PROOF_INGEST_KEY QUARZION_SCHEDULER_KEY QUARZION_AUDIT_SALT QUARZION_OUTBOX_ENCRYPTION_KEY QUARZION_DELIVERY_KEY; do
   value="$(value_of "${key}")"
   [[ "${value}" =~ ^[a-fA-F0-9]{64}$ ]] || failures+=("secret-format:${key}")
 done

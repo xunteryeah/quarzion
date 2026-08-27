@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import test from "node:test";
 
-const migrationFiles = ["0001_unified.sql", "0002_email_outbox.sql", "0003_p1_collection.sql", "0004_api_monitoring.sql"];
+const migrationFiles = ["0001_unified.sql", "0002_email_outbox.sql", "0003_p1_collection.sql", "0004_api_monitoring.sql", "0005_scheduler.sql"];
 const migrations = migrationFiles.map((file) => readFileSync(new URL(`../database/migrations/${file}`, import.meta.url), "utf8").replaceAll("--> statement-breakpoint", ""));
 const migration = migrations.join("\n");
 
@@ -21,7 +21,7 @@ function database() {
 
 test("正式迁移创建空业务库且不写入演示数据", () => {
   const db = database();
-  assert.equal(db.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get().count, 4);
+  assert.equal(db.prepare("SELECT COUNT(*) AS count FROM schema_migrations").get().count, 5);
   for (const table of ["users", "organizations", "projects", "prompts", "runs", "answers", "citations", "email_outbox", "collector_workers", "run_attempts", "evidence_artifacts", "system_alerts"]) {
     assert.equal(db.prepare(`SELECT COUNT(*) AS count FROM ${table}`).get().count, 0, `${table} 应为空`);
   }

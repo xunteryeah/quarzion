@@ -190,7 +190,7 @@ test("正式运行时强制登录、组织隔离、一次性邀请和无演示�
       name: "验收联系人",
       company: "验收咨询公司",
       email: "lead@example.com",
-      message: "希望了解豆包、腾讯元宝和 DeepSeek 的正式监测方案。",
+      message: "希望了解豆包、千问和 DeepSeek 的正式监测方案。",
       consent: true,
     }, { "x-forwarded-for": "203.0.113.91" });
     assert.equal(contact.response.status, 201, JSON.stringify(contact.json));

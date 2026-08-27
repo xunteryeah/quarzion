@@ -15,6 +15,7 @@ services:
       QUARZION_DB_PATH: /data/quarzion.sqlite
       QUARZION_MIGRATION_PATH: /app/database/migrations/0001_unified.sql
       QUARZION_MIGRATION_DIR: /app/database/migrations
+      QUARZION_SCHEDULER_KEY: ${QUARZION_SCHEDULER_KEY:-local-development-scheduler-key-change-me}
     volumes:
       - unified-data:/data
     expose:

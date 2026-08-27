@@ -38,6 +38,14 @@ function qwenSearchRequest(model, prompt, maxOutputTokens) {
   };
 }
 
+function chatCompletionsRequest(model, prompt, maxOutputTokens) {
+  return {
+    model,
+    messages: [{ role: "user", content: prompt }],
+    max_completion_tokens: maxOutputTokens,
+  };
+}
+
 function responsesRequest(capability, mode, prompt, maxOutputTokens) {
   const request = { model: capability.model, input: prompt, max_output_tokens: maxOutputTokens };
   if (capability.provider === "doubao") request.thinking = { type: "disabled" };
@@ -50,6 +58,7 @@ function responsesRequest(capability, mode, prompt, maxOutputTokens) {
 
 function requestFor(capability, mode, prompt, maxOutputTokens) {
   if (capability.provider === "qwen" && mode === "web_search") return qwenSearchRequest(capability.model, prompt, maxOutputTokens);
+  if (capability.protocol[mode] === "chat_completions") return chatCompletionsRequest(capability.model, prompt, maxOutputTokens);
   return responsesRequest(capability, mode, prompt, maxOutputTokens);
 }
 
@@ -132,6 +141,6 @@ export async function executeProviderTask(task, options = {}) {
     requestSha256: sha256(requestJson),
     providerResponseSha256: sha256(exchange.raw),
     rawResponseJson: exchange.raw,
-    capabilitySnapshot: { provider, model: capability.model, tier: capability.tier, mode, supports: capability.supports },
+    capabilitySnapshot: { provider, model: capability.model, tier: capability.tier, mode, protocol: capability.protocol[mode], supports: capability.supports },
   };
 }

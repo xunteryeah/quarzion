@@ -59,7 +59,7 @@ docker compose config >/dev/null
 # application containers from attempting the same ALTER TABLE concurrently.
 docker compose up -d --no-deps frontend
 for attempt in $(seq 1 30); do
-  if docker compose exec -T frontend node -e "fetch('http://127.0.0.1:3000/api/health').then(async r=>{const j=await r.json();if(!r.ok||j.migration!=='0003_p1_collection')process.exit(1)}).catch(()=>process.exit(1))"; then break; fi
+  if docker compose exec -T frontend node -e "fetch('http://127.0.0.1:3000/api/health').then(async r=>{const j=await r.json();if(!r.ok||j.migration!=='0005_scheduler')process.exit(1)}).catch(()=>process.exit(1))"; then break; fi
   [[ "${attempt}" -lt 30 ]] || { echo "P1 frontend migration did not become healthy" >&2; exit 1; }
   sleep 2
 done
@@ -69,6 +69,11 @@ docker compose up -d --no-deps nginx
 docker compose exec -T nginx nginx -t
 docker compose exec -T --user nginx nginx sh -c 'test -r /etc/nginx/secrets/admin.htpasswd'
 docker compose exec -T nginx nginx -s reload
+
+install -m 0644 "${release_dir}/ops/quarzion-scheduler.service" /etc/systemd/system/quarzion-scheduler.service
+install -m 0644 "${release_dir}/ops/quarzion-scheduler.timer" /etc/systemd/system/quarzion-scheduler.timer
+systemctl daemon-reload
+systemctl enable --now quarzion-scheduler.timer
 
 if [[ "${ENABLE_P1_COLLECTOR:-NO}" == "YES" ]]; then
   docker compose --profile collector up -d collector
