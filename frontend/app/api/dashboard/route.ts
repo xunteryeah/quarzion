@@ -233,6 +233,7 @@ async function fetchDashboard(
       return {
         id: brand.id,
         name: brand.name,
+        canonicalName: brand.canonicalName,
         website: brand.website == null ? null : String(brand.website),
         isPrimary: Boolean(brand.isPrimary),
         answers: distinctAnswers.size,
@@ -468,6 +469,76 @@ export async function POST(request: NextRequest) {
             : "实体候选已驳回，不参与指标计算",
           now,
         ),
+      ]);
+    } else if (command === "create_brand") {
+      const brandId = crypto.randomUUID();
+      const name = String(body.name ?? "").trim();
+      const canonicalName = String(body.canonicalName ?? name).trim();
+      const websiteValue = String(body.website ?? "").trim();
+      if (!name || name.length > 120 || !canonicalName || canonicalName.length > 120)
+        return NextResponse.json(
+          { error: "品牌名称和规范名称需要 1–120 个字符" },
+          { status: 400 },
+        );
+      let website: string | null = null;
+      if (websiteValue) {
+        try {
+          const url = new URL(websiteValue);
+          if (!["http:", "https:"].includes(url.protocol)) throw new Error();
+          website = url.toString();
+        } catch {
+          return NextResponse.json({ error: "请输入正确的品牌官网地址" }, { status: 400 });
+        }
+      }
+      const duplicate = await env.DB.prepare(
+        "SELECT id FROM brands WHERE organization_id = ? AND project_id = ? AND canonical_name = ? LIMIT 1",
+      ).bind(organizationId, projectId, canonicalName).first();
+      if (duplicate)
+        return NextResponse.json({ error: "该规范品牌名称已经存在" }, { status: 409 });
+      await env.DB.batch([
+        env.DB.prepare(
+          "INSERT INTO brands (id, organization_id, project_id, name, canonical_name, website, is_primary, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, 0, 'active', ?, ?)",
+        ).bind(brandId, organizationId, projectId, name, canonicalName, website, now, now),
+        env.DB.prepare(
+          "INSERT INTO audit_events (id, organization_id, project_id, actor_user_id, event_type, subject_type, subject_id, message, created_at) VALUES (?, ?, ?, ?, 'brand_created', 'brand', ?, ?, ?)",
+        ).bind(auditId, organizationId, projectId, session.userId, brandId, `新增监测品牌：${canonicalName}`, now),
+      ]);
+    } else if (command === "update_brand") {
+      const brandId = String(body.brandId ?? "");
+      const name = String(body.name ?? "").trim();
+      const canonicalName = String(body.canonicalName ?? name).trim();
+      const websiteValue = String(body.website ?? "").trim();
+      if (!name || name.length > 120 || !canonicalName || canonicalName.length > 120)
+        return NextResponse.json(
+          { error: "品牌名称和规范名称需要 1–120 个字符" },
+          { status: 400 },
+        );
+      const brand = await env.DB.prepare(
+        "SELECT id FROM brands WHERE id = ? AND organization_id = ? AND project_id = ? LIMIT 1",
+      ).bind(brandId, organizationId, projectId).first();
+      if (!brand) return NextResponse.json({ error: "品牌不存在" }, { status: 404 });
+      let website: string | null = null;
+      if (websiteValue) {
+        try {
+          const url = new URL(websiteValue);
+          if (!["http:", "https:"].includes(url.protocol)) throw new Error();
+          website = url.toString();
+        } catch {
+          return NextResponse.json({ error: "请输入正确的品牌官网地址" }, { status: 400 });
+        }
+      }
+      const duplicate = await env.DB.prepare(
+        "SELECT id FROM brands WHERE organization_id = ? AND project_id = ? AND canonical_name = ? AND id != ? LIMIT 1",
+      ).bind(organizationId, projectId, canonicalName, brandId).first();
+      if (duplicate)
+        return NextResponse.json({ error: "该规范品牌名称已经存在" }, { status: 409 });
+      await env.DB.batch([
+        env.DB.prepare(
+          "UPDATE brands SET name = ?, canonical_name = ?, website = ?, updated_at = ? WHERE id = ? AND organization_id = ? AND project_id = ?",
+        ).bind(name, canonicalName, website, now, brandId, organizationId, projectId),
+        env.DB.prepare(
+          "INSERT INTO audit_events (id, organization_id, project_id, actor_user_id, event_type, subject_type, subject_id, message, created_at) VALUES (?, ?, ?, ?, 'brand_updated', 'brand', ?, ?, ?)",
+        ).bind(auditId, organizationId, projectId, session.userId, brandId, `更新品牌资料：${canonicalName}`, now),
       ]);
     } else if (command === "create_action") {
       const id = crypto.randomUUID();

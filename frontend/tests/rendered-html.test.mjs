@@ -81,7 +81,7 @@ test("marketing system includes the complete deep content architecture", async (
   assert.match(home, /<MarketingNav \/>/);
   assert.match(home, /<MarketingFooter \/>/);
   assert.match(home, /geo-motion-forest\.png/);
-  assert.match(home, /AxpPreview/);
+  assert.match(home, /ApiPreview/);
   assert.match(sitemap, /marketingPages\.map/);
   assert.match(robots, /disallow: \["\/dashboard", "\/api\/"\]/);
 });

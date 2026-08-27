@@ -26,6 +26,6 @@ export async function projectAccess(userId: string, projectId: string) {
 export function permissionForDashboardCommand(command: string): Permission | null {
   if (["retry_run", "queue_batch"].includes(command)) return "run:queue";
   if (["review_alias", "create_action", "update_action", "create_prompt"].includes(command)) return "project:write";
-  if (command === "update_project") return "project:admin";
+  if (["update_project", "create_brand", "update_brand"].includes(command)) return "project:admin";
   return null;
 }

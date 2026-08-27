@@ -23,6 +23,7 @@ type PlatformStat = {
 type BrandStat = {
   id: string;
   name: string;
+  canonicalName: string;
   website: string | null;
   isPrimary: boolean;
   answers: number;
@@ -1147,6 +1148,12 @@ function BrandsPage({
   busy: string | null;
 }) {
   const [tab, setTab] = useState("tracked");
+  const [brandEditor, setBrandEditor] = useState<{
+    id?: string;
+    name: string;
+    canonicalName: string;
+    website: string;
+  } | null>(null);
   const recent = data.aliases
     .filter((alias) => alias.status === "approved")
     .slice(0, 3);
@@ -1263,12 +1270,92 @@ function BrandsPage({
             </div>
             <button
               className="primary-button"
-              disabled
-              title="品牌新增接口正在接入"
+              disabled={busy === "brand:create"}
+              onClick={() =>
+                setBrandEditor({ name: "", canonicalName: "", website: "" })
+              }
             >
               + 添加品牌
             </button>
           </div>
+          {brandEditor ? (
+            <form
+              className="brand-editor"
+              onSubmit={async (event) => {
+                event.preventDefault();
+                const token = brandEditor.id
+                  ? `brand:${brandEditor.id}`
+                  : "brand:create";
+                await command(
+                  {
+                    command: brandEditor.id ? "update_brand" : "create_brand",
+                    brandId: brandEditor.id,
+                    name: brandEditor.name,
+                    canonicalName: brandEditor.canonicalName || brandEditor.name,
+                    website: brandEditor.website,
+                  },
+                  token,
+                  brandEditor.id ? "品牌资料已更新" : "品牌已添加",
+                );
+                setBrandEditor(null);
+              }}
+            >
+              <label>
+                <span>品牌显示名称</span>
+                <input
+                  required
+                  maxLength={120}
+                  value={brandEditor.name}
+                  onChange={(event) =>
+                    setBrandEditor({ ...brandEditor, name: event.target.value })
+                  }
+                  placeholder="例如：劳力士"
+                />
+              </label>
+              <label>
+                <span>规范名称</span>
+                <input
+                  required
+                  maxLength={120}
+                  value={brandEditor.canonicalName}
+                  onChange={(event) =>
+                    setBrandEditor({
+                      ...brandEditor,
+                      canonicalName: event.target.value,
+                    })
+                  }
+                  placeholder="用于去重和实体识别"
+                />
+              </label>
+              <label>
+                <span>官方网站（可选）</span>
+                <input
+                  type="url"
+                  value={brandEditor.website}
+                  onChange={(event) =>
+                    setBrandEditor({ ...brandEditor, website: event.target.value })
+                  }
+                  placeholder="https://example.com"
+                />
+              </label>
+              <div>
+                <button
+                  type="button"
+                  className="secondary-button"
+                  onClick={() => setBrandEditor(null)}
+                >
+                  取消
+                </button>
+                <button
+                  type="submit"
+                  className="primary-button"
+                  disabled={busy === (brandEditor.id ? `brand:${brandEditor.id}` : "brand:create")}
+                >
+                  {brandEditor.id ? "保存修改" : "确认添加"}
+                </button>
+              </div>
+            </form>
+          ) : null}
           <div className="table-scroll">
             <table>
               <thead>
@@ -1287,7 +1374,7 @@ function BrandsPage({
                     <td>
                       <BrandCell brand={brand} />
                     </td>
-                    <td>{brand.name}</td>
+                    <td>{brand.canonicalName}</td>
                     <td>
                       <span className="alias-list">
                         {data.aliases
@@ -1314,8 +1401,15 @@ function BrandsPage({
                     <td>
                       <button
                         className="icon-button"
-                        disabled
-                        title="品牌编辑接口正在接入"
+                        disabled={busy === `brand:${brand.id}`}
+                        onClick={() =>
+                          setBrandEditor({
+                            id: brand.id,
+                            name: brand.name,
+                            canonicalName: brand.canonicalName,
+                            website: brand.website ?? "",
+                          })
+                        }
                       >
                         编辑
                       </button>
