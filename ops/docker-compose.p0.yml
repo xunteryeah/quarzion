@@ -1,0 +1,86 @@
+name: quarzion
+
+services:
+  frontend:
+    image: ${QUARZION_FRONTEND_IMAGE:?QUARZION_FRONTEND_IMAGE is required}
+    container_name: quarzion-frontend
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      QUARZION_DB_PATH: /data/quarzion.sqlite
+      QUARZION_MIGRATION_DIR: /app/database/migrations
+      GEO_PROOF_INGEST_KEY: ${GEO_PROOF_INGEST_KEY:?GEO_PROOF_INGEST_KEY is required}
+      QUARZION_AUDIT_SALT: ${QUARZION_AUDIT_SALT:?QUARZION_AUDIT_SALT is required}
+      QUARZION_OUTBOX_ENCRYPTION_KEY: ${QUARZION_OUTBOX_ENCRYPTION_KEY:?QUARZION_OUTBOX_ENCRYPTION_KEY is required}
+      QUARZION_DELIVERY_KEY: ${QUARZION_DELIVERY_KEY:?QUARZION_DELIVERY_KEY is required}
+      QUARZION_EMAIL_MODE: ${QUARZION_EMAIL_MODE:-resend}
+      QUARZION_FROM_EMAIL: ${QUARZION_FROM_EMAIL:-}
+      QUARZION_CONTACT_EMAIL: ${QUARZION_CONTACT_EMAIL:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+    volumes:
+      - unified-data:/data
+    expose: ["3000"]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 8s
+      retries: 8
+      start_period: 30s
+    init: true
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 900m
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+    restart: unless-stopped
+
+  admin:
+    image: ${QUARZION_ADMIN_IMAGE:?QUARZION_ADMIN_IMAGE is required}
+    container_name: quarzion-admin
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3001
+      QUARZION_DB_PATH: /data/quarzion.sqlite
+      QUARZION_MIGRATION_DIR: /app/database/migrations
+      QUARZION_SELF_HOSTED_ADMIN: "1"
+      QUARZION_APP_URL: ${QUARZION_APP_URL:?QUARZION_APP_URL is required}
+      QUARZION_OUTBOX_ENCRYPTION_KEY: ${QUARZION_OUTBOX_ENCRYPTION_KEY:?QUARZION_OUTBOX_ENCRYPTION_KEY is required}
+    volumes:
+      - unified-data:/data
+    expose: ["3001"]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 20s
+      timeout: 8s
+      retries: 8
+      start_period: 30s
+    init: true
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 700m
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:alpine
+    container_name: quarzion-nginx
+    ports: ["80:80", "443:443"]
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./secrets:/etc/nginx/secrets:ro
+      - ./acme:/var/www/certbot:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - ./logs/nginx:/var/log/nginx
+    depends_on:
+      frontend: { condition: service_healthy }
+      admin: { condition: service_healthy }
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 128m
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "5" }
+    restart: unless-stopped
+
+volumes:
+  unified-data:

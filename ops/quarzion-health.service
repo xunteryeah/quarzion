@@ -1,0 +1,12 @@
+[Unit]
+Description=Quarzion production health check
+After=docker.service network-online.target
+OnFailure=quarzion-alert@%n.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/quarzion
+EnvironmentFile=-/opt/quarzion/.env
+ExecStart=/opt/quarzion/scripts/health-check.sh
+User=root
+Group=root

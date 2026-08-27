@@ -1,0 +1,15 @@
+.git
+.DS_Store
+.env
+secrets
+acme
+backups
+**/node_modules
+**/.next
+**/.wrangler
+**/dist
+**/.data
+**/*.sqlite
+**/*.sqlite-shm
+**/*.sqlite-wal
+**/*.log

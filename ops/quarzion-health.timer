@@ -1,0 +1,11 @@
+[Unit]
+Description=Quarzion production health check every five minutes
+
+[Timer]
+OnBootSec=2m
+OnUnitActiveSec=5m
+Persistent=true
+Unit=quarzion-health.service
+
+[Install]
+WantedBy=timers.target

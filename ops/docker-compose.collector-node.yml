@@ -1,0 +1,25 @@
+services:
+  collector:
+    image: ${QUARZION_COLLECTOR_IMAGE:?QUARZION_COLLECTOR_IMAGE is required}
+    container_name: quarzion-collector
+    restart: unless-stopped
+    environment:
+      QUARZION_API_BASE: ${QUARZION_API_BASE:-https://quarzion.com}
+      GEO_PROOF_INGEST_KEY: ${GEO_PROOF_INGEST_KEY:?GEO_PROOF_INGEST_KEY is required}
+      COLLECTOR_WORKER_ID: ${COLLECTOR_WORKER_ID:?COLLECTOR_WORKER_ID is required}
+      COLLECTOR_LABEL: ${COLLECTOR_LABEL:-Shanghai official API worker}
+      COLLECTOR_VERSION: ${COLLECTOR_VERSION:-2.0.0}
+      COLLECTOR_POLL_MS: ${COLLECTOR_POLL_MS:-5000}
+      COLLECTOR_PLATFORMS: ${COLLECTOR_PLATFORMS:-doubao,qwen,deepseek}
+      DOUBAO_ARK_API_KEY: ${DOUBAO_ARK_API_KEY:-}
+      DOUBAO_ARK_MODELS: ${DOUBAO_ARK_MODELS:-doubao-seed-2-1-pro-260628,doubao-seed-2-1-turbo-260628}
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      QWEN_MODELS: ${QWEN_MODELS:-qwen3.8-max,qwen3.7-plus}
+      DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:-}
+      DEEPSEEK_MODELS: ${DEEPSEEK_MODELS:-deepseek-v4-pro,deepseek-v4-flash}
+    mem_limit: 512m
+    memswap_limit: 768m
+    cpus: 1.5
+    pids_limit: 128
+    security_opt:
+      - no-new-privileges:true

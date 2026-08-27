@@ -1,0 +1,15 @@
+[Unit]
+Description=Quarzion encrypted email outbox delivery
+After=docker.service
+Requires=docker.service
+OnFailure=quarzion-alert@%n.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/opt/quarzion/.env
+ExecStart=/opt/quarzion/scripts/process-email-outbox.sh
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
