@@ -1,5 +1,5 @@
 [Unit]
-Description=Run Quarzion email delivery every minute
+Description=Run WindCall email delivery every minute
 
 [Timer]
 OnBootSec=90s

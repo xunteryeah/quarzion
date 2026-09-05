@@ -34,5 +34,5 @@ else
   for unit in quarzion-email-delivery.timer quarzion-backup.timer quarzion-health.timer; do systemctl disable --now "${unit}" >/dev/null 2>&1 || true; done
 fi
 
-curl --fail --silent --show-error --max-time 20 https://quarzion.com/ >/dev/null
+curl --fail --silent --show-error --max-time 20 https://windcall.cn/ >/dev/null
 printf '{"event":"p0_rollback_completed","snapshot":"%s","time":"%s"}\n' "${snapshot}" "$(date -u +%FT%TZ)"

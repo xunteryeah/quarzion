@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const origin = "https://quarzion.com";
+const origin = "https://windcall.cn";
 
 export default function robots(): MetadataRoute.Robots {
   return {

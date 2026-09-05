@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-message="${1:-Quarzion production alert}"
+message="${1:-WindCall production alert}"
 webhook="${QUARZION_ALERT_WEBHOOK_URL:-}"
 resend_key="${RESEND_API_KEY:-}"
 from_email="${QUARZION_FROM_EMAIL:-}"
@@ -33,7 +33,7 @@ if [[ -n "${webhook}" ]]; then
 fi
 
 if [[ -n "${resend_key}" && -n "${from_email}" && -n "${alert_email}" ]]; then
-  email_payload="$(printf '{\"from\":\"%s\",\"to\":[\"%s\"],\"subject\":\"[Quarzion] 生产环境异常通知\",\"text\":\"%s\\n\\n时间：%s\"}' \
+  email_payload="$(printf '{\"from\":\"%s\",\"to\":[\"%s\"],\"subject\":\"[WindCall] 生产环境异常通知\",\"text\":\"%s\\n\\n时间：%s\"}' \
     "$(json_escape "${from_email}")" "$(json_escape "${alert_email}")" "$(json_escape "${message}")" "${event_time}")"
   curl --fail --silent --show-error --max-time 15 \
     -H "Authorization: Bearer ${resend_key}" \

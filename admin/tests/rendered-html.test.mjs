@@ -17,7 +17,7 @@ test("build emits the private self-hosted GEO operations console", async () => {
     readFile(new URL("dist/standalone/server.js", root), "utf8"),
   ]);
 
-  assert.match(layout, /Quarzion Admin｜内部运营系统/);
+  assert.match(layout, /WindCall Admin｜内部运营系统/);
   assert.match(layout, /\/og-admin-light\.png/);
   assert.match(dashboard, /内部运营系统/);
   assert.match(dashboard, /客户项目/);
@@ -38,7 +38,7 @@ test("build emits the private self-hosted GEO operations console", async () => {
   assert.match(runtime, /QUARZION_DB_PATH/);
   assert.match(bootstrap, /QUARZION_MIGRATION_PATH/);
   assert.doesNotMatch(bootstrap, /seed/i);
-  assert.match(route, /x-quarzion-admin/);
+  assert.match(route, /x-windcall-admin/);
   assert.match(route, /worker_offline/);
   assert.match(route, /queue_backlog/);
   assert.match(route, /evidence_inspected/);

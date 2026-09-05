@@ -6,7 +6,7 @@ import { MarketingFooter, MarketingNav } from "@/components/MarketingChrome";
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  name: "Quarzion",
+  name: "WindCall",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web",
   description:
@@ -60,7 +60,7 @@ function MotionPanel({
         <i />
         <i />
         <i />
-        <span>app.quarzion.com</span>
+        <span>app.windcall.cn</span>
       </div>
       {kind === "hero" ? (
         <>
@@ -211,7 +211,7 @@ function Testimonial({ light = false }: { light?: boolean }) {
       <blockquote>
         “不是只给客户一个黑盒分数，而是让提及率、排名和引用都能展开到原始问题、模型、模式和回答。”
         <footer>
-          <b>Quarzion 监测方法</b>
+          <b>WindCall 监测方法</b>
           <span>产品证据标准 · 非客户背书</span>
         </footer>
         <a href="/guides/ai-search-guide">阅读监测方法</a>
@@ -236,7 +236,7 @@ export function MarketingHome() {
             客户不再只看搜索结果——<em>他们会直接问 AI。</em>
           </h1>
           <p>
-            Quarzion 持续记录品牌在豆包、千问和 DeepSeek
+            WindCall 持续记录品牌在豆包、千问和 DeepSeek
             中的回答、提及与引用，并把每个指标连接到原始证据。
           </p>
           <AuditForm />
@@ -405,8 +405,8 @@ export function MarketingHome() {
 
       <section className="sv2-publications">
         <div className="sv2-publication-feature">
-          <span>QUARZION METHOD</span>
-          <strong>Quarzion Labs</strong>
+          <span>WINDCALL METHOD</span>
+          <strong>WindCall Labs</strong>
           <h3>品牌如何重新思考 AI 时代的搜索与内容</h3>
         </div>
         <div className="sv2-publication-cards">

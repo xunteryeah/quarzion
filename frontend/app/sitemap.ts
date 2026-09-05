@@ -1,7 +1,7 @@
 import { marketingPages } from "@/lib/marketing-content";
 import type { MetadataRoute } from "next";
 
-const origin = "https://quarzion.com";
+const origin = "https://windcall.cn";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const updated = new Date("2026-08-20T00:00:00+08:00");

@@ -28,9 +28,9 @@ function Brand() {
     <a
       className="marketing-brand sv2-brand"
       href="/"
-      aria-label="Quarzion 首页"
+      aria-label="WindCall 首页"
     >
-      <img src="/quarzion-logo.svg" alt="" />
+      <img src="/windcall-logo.svg" alt="" />
     </a>
   );
 }
@@ -83,7 +83,7 @@ export function MarketingNav() {
       <a
         className="chapter-strip sv2-strip"
         href="/guides/ai-search-guide"
-        aria-label="阅读 Quarzion AI 搜索实战指南"
+        aria-label="阅读 WindCall AI 搜索实战指南"
       >
         <span className="sv2-ticker-fade is-left" aria-hidden="true" />
         <span className="sv2-ticker-track" aria-hidden="true">
@@ -308,7 +308,7 @@ export function MarketingFooter() {
         <Brand />
       </div>
       <div className="footer-bottom">
-        <span>© 2026 Quarzion</span>
+        <span>© 2026 WindCall</span>
         <a href="/about">服务条款</a>
         <a href="/about">隐私政策</a>
       </div>

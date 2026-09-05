@@ -851,7 +851,7 @@ const faqDefinitions = [
   ],
   [
     "faqs/platform-coverage",
-    "Quarzion 可以监测哪些国内 AI 平台？",
+    "WindCall 可以监测哪些国内 AI 平台？",
     "当前正式版本通过官方 API 监测豆包、千问和 DeepSeek，并分别记录模型版本、直接回答、联网搜索、服务商请求 ID 与可见引用。",
   ],
   [
@@ -866,7 +866,7 @@ const faqDefinitions = [
   ],
   [
     "faqs/data-collection",
-    "Quarzion 如何采集 AI 平台数据？",
+    "WindCall 如何采集 AI 平台数据？",
     "当前正式版本只使用平台官方 API。每次任务记录平台、模型版本、回答模式、服务商请求 ID、Token、重试、采集器版本、原始回答与引用。",
   ],
   [
@@ -961,7 +961,7 @@ const faqPages: MarketingPage[] = faqDefinitions.map(
         body: "任何 GEO 判断都应该说明平台、时间、提示词集合和数据来源。不同平台和模型版本可能产生差异，因此需要保留原始回答并使用稳定窗口比较。",
       },
       {
-        title: "Quarzion 中如何处理",
+        title: "WindCall 中如何处理",
         body: "系统将配置、运行、回答、解析结果和引用证据关联起来，让团队既能查看汇总趋势，也能回到单次运行复核。",
       },
     ],
@@ -1018,7 +1018,7 @@ const labPages: MarketingPage[] = labDefinitions.map(
   ([path, title, summary, value, label]) => ({
     path,
     kind: "lab",
-    kicker: "Quarzion Labs",
+    kicker: "WindCall Labs",
     title,
     summary,
     theme: "brown",
@@ -1251,11 +1251,11 @@ const companyPages: MarketingPage[] = [
   {
     path: "about",
     kind: "company",
-    kicker: "关于 Quarzion",
+    kicker: "关于 WindCall",
     title: "为 AI 时代建立一套",
     emphasis: "可信的品牌事实系统。",
     summary:
-      "Quarzion 希望让品牌知道 AI 在说什么、为什么这样说，以及一次优化是否真的产生了变化。",
+      "WindCall 希望让品牌知道 AI 在说什么、为什么这样说，以及一次优化是否真的产生了变化。",
     sections: [
       {
         title: "我们解决的问题",
@@ -1383,7 +1383,7 @@ const indexPages: MarketingPage[] = [
   ),
   indexPage(
     "labs",
-    "Quarzion Labs",
+    "WindCall Labs",
     "用数据研究 AI 搜索行为",
     "研究引用、问题、平台采用、爬虫、内容结构与转化。演示研究与正式结论明确区分。",
     labPages.map((page) => page.path),
@@ -1447,7 +1447,7 @@ const faqCategoryPages: MarketingPage[] = [
   indexPage(
     "faqs/category/security",
     "安全 FAQ",
-    "企业团队如何安全使用 Quarzion？",
+    "企业团队如何安全使用 WindCall？",
     "覆盖密钥隔离、组织权限、审计日志和数据治理。",
     ["faqs/security", "faqs/roles-permissions", "faqs/technical-blockers"],
   ),

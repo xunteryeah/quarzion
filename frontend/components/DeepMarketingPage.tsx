@@ -19,7 +19,7 @@ function ProductVisual({ page }: { page: MarketingPage }) {
           <i />
           <i />
         </span>
-        <b>app.quarzion.com</b>
+        <b>app.windcall.cn</b>
       </div>
       <div className="deep-product-body">
         <aside>
@@ -275,7 +275,7 @@ function FeatureGlass({ index, title }: { index: number; title: string }) {
       <div className="feature-glow" />
       <article>
         <header>
-          <small>QUARZION · {String(index + 1).padStart(2, "0")}</small>
+          <small>WINDCALL · {String(index + 1).padStart(2, "0")}</small>
           <b>{title}</b>
         </header>
         <div className="feature-big-number">REAL DATA</div>
@@ -488,7 +488,7 @@ function StructuredProductPage({ page }: { page: MarketingPage }) {
             <i />
             <i />
             <i />
-            <span>app.quarzion.com</span>
+            <span>app.windcall.cn</span>
           </header>
           {isAxp ? (
             <div className="sv2-stage-axp">
@@ -570,12 +570,12 @@ function StructuredProductPage({ page }: { page: MarketingPage }) {
         <article>
           <strong>EVIDENCE</strong>
           <p>回答、引用、模型、模式与哈希完整留档</p>
-          <span>QUARZION METHOD</span>
+          <span>WINDCALL METHOD</span>
         </article>
         <blockquote>
           “我们不再只猜测 AI
           回答了什么。每一次回答、品牌提及和引用，都可以回到证据。”
-          <small>Quarzion 监测方法 · 非客户背书</small>
+          <small>WindCall 监测方法 · 非客户背书</small>
         </blockquote>
       </section>
       <MarketingCTA />

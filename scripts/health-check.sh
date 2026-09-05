@@ -11,10 +11,10 @@ check_url() {
   [[ "${status}" == "${expected}" ]] || failures+=("${name}:${status:-unreachable}")
 }
 
-check_url website https://quarzion.com/ 200
-check_url admin https://admin.quarzion.com/ 401
-if getent hosts app.quarzion.com >/dev/null 2>&1; then check_url customer_app https://app.quarzion.com/login 200; fi
-if getent hosts api.quarzion.com >/dev/null 2>&1; then check_url api_health https://api.quarzion.com/api/health 200; fi
+check_url website https://windcall.cn/ 200
+check_url admin https://admin.windcall.cn/ 401
+if getent hosts app.windcall.cn >/dev/null 2>&1; then check_url customer_app https://app.windcall.cn/login 200; fi
+if getent hosts api.windcall.cn >/dev/null 2>&1; then check_url api_health https://api.windcall.cn/api/health 200; fi
 
 for container in quarzion-frontend quarzion-admin quarzion-nginx; do
   running="$(docker inspect --format '{{.State.Running}}' "${container}" 2>/dev/null || true)"
@@ -38,10 +38,10 @@ elif [[ "${email_failures}" -gt 0 ]]; then failures+=("email_outbox:${email_fail
 disk_usage="$(df -P /opt/quarzion | awk 'NR==2 {gsub(/%/,"",$5); print $5}')"
 if [[ "${disk_usage:-100}" -ge "${QUARZION_DISK_ALERT_PERCENT:-85}" ]]; then failures+=("disk:${disk_usage}%"); fi
 
-if ! openssl x509 -checkend 1814400 -noout -in /etc/letsencrypt/live/quarzion.com/fullchain.pem >/dev/null 2>&1; then failures+=("certificate:expires_within_21_days"); fi
+if ! openssl x509 -checkend 1814400 -noout -in /etc/letsencrypt/live/windcall.cn/fullchain.pem >/dev/null 2>&1; then failures+=("certificate:expires_within_21_days"); fi
 
 if [[ ${#failures[@]} -gt 0 ]]; then
-  message="Quarzion health check failed: ${failures[*]}"
+  message="WindCall health check failed: ${failures[*]}"
   printf '{"level":"error","event":"health_check_failed","details":"%s","time":"%s"}\n' "${failures[*]}" "$(date -u +%FT%TZ)" >&2
   "${script_dir}/notify-alert.sh" "${message}" || true
   exit 1

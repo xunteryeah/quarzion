@@ -26,10 +26,10 @@ else
   printf '{"event":"email_delivery_deferred","mode":"%s","time":"%s"}\n' "${email_mode}" "$(date -u +%FT%TZ)"
 fi
 
-certbot certonly --non-interactive --webroot --webroot-path "${quarzion_root}/acme" --cert-name quarzion.com --expand \
-  -d quarzion.com -d www.quarzion.com -d admin.quarzion.com -d app.quarzion.com -d api.quarzion.com
-for host in quarzion.com www.quarzion.com admin.quarzion.com app.quarzion.com api.quarzion.com; do
-  openssl x509 -in /etc/letsencrypt/live/quarzion.com/fullchain.pem -noout -ext subjectAltName | grep -q "DNS:${host}"
+certbot certonly --non-interactive --webroot --webroot-path "${quarzion_root}/acme" --cert-name windcall.cn --expand \
+  -d windcall.cn -d www.windcall.cn -d admin.windcall.cn -d app.windcall.cn -d api.windcall.cn
+for host in windcall.cn www.windcall.cn admin.windcall.cn app.windcall.cn api.windcall.cn; do
+  openssl x509 -in /etc/letsencrypt/live/windcall.cn/fullchain.pem -noout -ext subjectAltName | grep -q "DNS:${host}"
 done
 
 if docker volume inspect quarzion_unified-data >/dev/null 2>&1; then
@@ -97,13 +97,13 @@ local_status() {
   curl --silent --show-error --max-time 20 --output /dev/null --write-out '%{http_code}' \
     --resolve "${host}:443:127.0.0.1" -X "${method}" "https://${host}${path}"
 }
-[[ "$(local_status quarzion.com /)" == "200" ]]
-[[ "$(local_status app.quarzion.com /login)" == "200" ]]
-[[ "$(local_status app.quarzion.com /api/dashboard)" == "401" ]]
-[[ "$(local_status api.quarzion.com /api/health)" == "200" ]]
-[[ "$(local_status api.quarzion.com /)" == "404" ]]
-[[ "$(local_status admin.quarzion.com /)" == "401" ]]
-[[ "$(local_status app.quarzion.com /api/internal/email-delivery POST)" == "404" ]]
+[[ "$(local_status windcall.cn /)" == "200" ]]
+[[ "$(local_status app.windcall.cn /login)" == "200" ]]
+[[ "$(local_status app.windcall.cn /api/dashboard)" == "401" ]]
+[[ "$(local_status api.windcall.cn /api/health)" == "200" ]]
+[[ "$(local_status api.windcall.cn /)" == "404" ]]
+[[ "$(local_status admin.windcall.cn /)" == "401" ]]
+[[ "$(local_status app.windcall.cn /api/internal/email-delivery POST)" == "404" ]]
 "${quarzion_root}/scripts/health-check.sh"
 
 trap - EXIT

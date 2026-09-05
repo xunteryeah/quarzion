@@ -714,7 +714,7 @@ td small { display: block; margin-top: 4px; color: #89969f; font-size: 9px; line
   .sv2-split-feature.monitoring,.sv2-split-feature.trends { min-height: 0; }
 }
 
-/* Quarzion product workspace — warm editorial glass system */
+/* WindCall product workspace — warm editorial glass system */
 .product-shell {
   --workspace-brown: #21130b;
   --workspace-paper: #f7f4ec;
@@ -957,7 +957,7 @@ td, .prompt-group-row, .prompt-row { border-top-color: rgba(62, 45, 31, .09); co
   .sv2-stage-browser { border-width: 8px; }
 }
 
-/* Reference-matched Quarzion navigation: announcement ticker, glass shell and mega menus. */
+/* WindCall navigation: announcement ticker, glass shell and mega menus. */
 .chapter-strip.sv2-strip {
   position: relative;
   min-height: 50px;

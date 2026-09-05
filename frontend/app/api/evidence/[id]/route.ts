@@ -17,10 +17,10 @@ export async function GET(request: NextRequest, context: { params: Promise<{ id:
   return new NextResponse(artifact.content as BodyInit, {
     headers: {
       "Content-Type": artifact.mimeType,
-      "Content-Disposition": `inline; filename=quarzion-evidence-${artifact.id}.${artifact.kind === "screenshot" ? artifact.mimeType.includes("png") ? "png" : artifact.mimeType.includes("jpeg") ? "jpg" : "webp" : "html"}`,
+      "Content-Disposition": `inline; filename=windcall-evidence-${artifact.id}.${artifact.kind === "screenshot" ? artifact.mimeType.includes("png") ? "png" : artifact.mimeType.includes("jpeg") ? "jpg" : "webp" : "html"}`,
       "Cache-Control": "private, no-store",
       "X-Content-Type-Options": "nosniff",
-      "X-Quarzion-SHA256": artifact.sha256,
+      "X-WindCall-SHA256": artifact.sha256,
     },
   });
 }

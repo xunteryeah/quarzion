@@ -1,9 +1,9 @@
 [Unit]
-Description=Send a Quarzion systemd failure alert for %i
+Description=Send a WindCall systemd failure alert for %i
 
 [Service]
 Type=oneshot
 EnvironmentFile=-/opt/quarzion/.env
-ExecStart=/opt/quarzion/scripts/notify-alert.sh "Quarzion systemd unit failed: %i"
+ExecStart=/opt/quarzion/scripts/notify-alert.sh "WindCall systemd unit failed: %i"
 User=root
 Group=root

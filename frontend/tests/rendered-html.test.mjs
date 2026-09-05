@@ -4,7 +4,7 @@ import test from "node:test";
 
 const root = new URL("../", import.meta.url);
 
-test("build emits the self-hosted Quarzion application and SQLite runtime", async () => {
+test("build emits the self-hosted WindCall application and SQLite runtime", async () => {
   const [dashboard, layout, migration, runtime, bootstrap, dockerfile, server] = await Promise.all([
     readFile(new URL("components/Dashboard.tsx", root), "utf8"),
     readFile(new URL("app/layout.tsx", root), "utf8"),

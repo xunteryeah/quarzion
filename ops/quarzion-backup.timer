@@ -1,5 +1,5 @@
 [Unit]
-Description=Daily Quarzion production backup
+Description=Daily WindCall production backup
 
 [Timer]
 OnCalendar=*-*-* 19:20:00 UTC

@@ -439,7 +439,7 @@ export function AdminDashboard() {
             <i />
           </span>
           <div>
-            <b>Quarzion</b>
+            <b>WindCall</b>
             <small>ADMIN CONSOLE</small>
           </div>
         </button>
@@ -488,7 +488,7 @@ export function AdminDashboard() {
         </div>
         <a
           className="client-link"
-          href="https://app.quarzion.com"
+          href="https://app.windcall.cn"
           target="_blank"
           rel="noreferrer"
         >
@@ -532,7 +532,7 @@ export function AdminDashboard() {
               </div>
             ) : null}
             <div>
-              <p>QUARZION / ADMIN CONTROL / {pageTitles[page][0]}</p>
+              <p>WINDCALL / ADMIN CONTROL / {pageTitles[page][0]}</p>
               <h1>
                 {page === "overview" ? (
                   <>
@@ -1495,6 +1495,7 @@ function Accounts({
           {stop ? "恢复全部采集" : "紧急停止"}
         </button>
       </section>
+      <p className="section-note">P1-05 与 P1-06 暂不启用；当前正式采集链路仅运行三家官方 API。</p>
       <div className="pool-cards">
         {data.policies.map((policy) => (
           <article key={policy.platform}>

@@ -490,7 +490,7 @@ export function Dashboard() {
         <button
           className="brand-home"
           onClick={() => setPage("overview")}
-          aria-label="Quarzion 首页"
+          aria-label="WindCall 首页"
         >
           <span className="app-logo" aria-hidden="true">
             <i />
@@ -498,7 +498,7 @@ export function Dashboard() {
             <i />
             <i />
           </span>
-          <b>Quarzion</b>
+          <b>WindCall</b>
         </button>
         <div className="header-right">
           <span className="header-signal">
@@ -644,7 +644,7 @@ function EmptyWorkspace() {
           <i />
           <i />
         </span>
-        <b>Quarzion</b>
+        <b>WindCall</b>
         <em>
           <i /> SYSTEM ONLINE
         </em>

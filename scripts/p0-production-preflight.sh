@@ -18,7 +18,7 @@ require_value() {
   if [[ -z "${value}" || "${value}" == replace-with-* ]]; then failures+=("env:${key}"); fi
 }
 
-for host in app.quarzion.com api.quarzion.com admin.quarzion.com; do
+for host in app.windcall.cn api.windcall.cn admin.windcall.cn; do
   resolved="$(getent ahostsv4 "${host}" 2>/dev/null | awk '{print $1}' | sort -u | paste -sd, - || true)"
   if [[ ",${resolved}," != *",${expected_ip},"* ]] && command -v dig >/dev/null 2>&1; then
     public_resolved="$(for resolver in 8.8.8.8 1.1.1.1; do dig +tcp +time=5 +tries=1 +short @"${resolver}" A "${host}" 2>/dev/null || true; done | sort -u | paste -sd, -)"

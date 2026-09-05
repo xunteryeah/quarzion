@@ -1,5 +1,5 @@
 [Unit]
-Description=Quarzion encrypted email outbox delivery
+Description=WindCall encrypted email outbox delivery
 After=docker.service
 Requires=docker.service
 OnFailure=quarzion-alert@%n.service

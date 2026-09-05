@@ -36,7 +36,7 @@ for key in GEO_PROOF_INGEST_KEY QUARZION_AUDIT_SALT QUARZION_OUTBOX_ENCRYPTION_K
 done
 
 if [[ -z "$(value_of QUARZION_APP_URL)" ]]; then
-  set_value QUARZION_APP_URL "https://app.quarzion.com"
+  set_value QUARZION_APP_URL "https://app.windcall.cn"
   printf 'configured=QUARZION_APP_URL\n'
 fi
 

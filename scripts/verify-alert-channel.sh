@@ -14,5 +14,5 @@ RESEND_API_KEY="$(value_of RESEND_API_KEY)" \
 QUARZION_FROM_EMAIL="$(value_of QUARZION_FROM_EMAIL)" \
 QUARZION_CONTACT_EMAIL="$(value_of QUARZION_CONTACT_EMAIL)" \
 QUARZION_ALERT_EMAIL="$(value_of QUARZION_ALERT_EMAIL)" \
-  "${script_dir}/notify-alert.sh" "Quarzion P0 alert channel verification"
+  "${script_dir}/notify-alert.sh" "WindCall P0 alert channel verification"
 printf 'alert_channel=verified\n'

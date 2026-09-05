@@ -1,5 +1,5 @@
 [Unit]
-Description=Quarzion protected production backup
+Description=WindCall protected production backup
 After=docker.service
 Requires=docker.service
 OnFailure=quarzion-alert@%n.service

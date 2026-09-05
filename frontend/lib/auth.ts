@@ -1,6 +1,6 @@
 import { env } from "@/db/runtime";
 
-export const SESSION_COOKIE = "quarzion_session";
+export const SESSION_COOKIE = "windcall_session";
 export const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 const PASSWORD_ITERATIONS = 600_000;
 

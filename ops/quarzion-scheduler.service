@@ -1,5 +1,5 @@
 [Unit]
-Description=Generate due Quarzion official API monitoring runs
+Description=Generate due WindCall official API monitoring runs
 Requires=docker.service
 After=docker.service
 

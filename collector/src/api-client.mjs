@@ -13,13 +13,13 @@ export class ApiClient {
       headers: {
         Authorization: `Bearer ${this.secret}`,
         "Content-Type": "application/json",
-        "X-Quarzion-Worker-Id": this.workerId,
+        "X-WindCall-Worker-Id": this.workerId,
         ...(init.headers || {}),
       },
     });
     if (!accepted.includes(response.status)) {
       const body = await response.text();
-      throw new Error(`Quarzion API ${path} 返回 ${response.status}: ${body.slice(0, 500)}`);
+      throw new Error(`WindCall API ${path} 返回 ${response.status}: ${body.slice(0, 500)}`);
     }
     if (response.status === 204) return null;
     return response.json();

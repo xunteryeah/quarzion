@@ -188,11 +188,11 @@ async function authorize(request: NextRequest) {
   const local = new URL(request.url).hostname === "localhost";
   const trustedSelfHosted =
     process.env.QUARZION_SELF_HOSTED_ADMIN === "1" &&
-    request.headers.get("x-quarzion-admin") === "1";
+    (request.headers.get("x-windcall-admin") === "1" || request.headers.get("x-quarzion-admin") === "1");
   return (
     user ??
     (local || trustedSelfHosted
-      ? { email: "admin@quarzion.local", displayName: "Quarzion 管理员" }
+      ? { email: "admin@windcall.local", displayName: "WindCall 管理员" }
       : null)
   );
 }
@@ -349,10 +349,10 @@ export async function GET(request: NextRequest) {
     return new NextResponse(artifact.content as BodyInit, {
       headers: {
         "Content-Type": artifact.mimeType,
-        "Content-Disposition": `inline; filename=quarzion-evidence-${artifact.id}.${extension}`,
+        "Content-Disposition": `inline; filename=windcall-evidence-${artifact.id}.${extension}`,
         "Cache-Control": "private, no-store",
         "X-Content-Type-Options": "nosniff",
-        "X-Quarzion-SHA256": artifact.sha256,
+        "X-WindCall-SHA256": artifact.sha256,
       },
     });
   }
@@ -529,7 +529,7 @@ export async function POST(request: NextRequest) {
       Date.now() + 7 * 24 * 60 * 60 * 1000,
     ).toISOString();
     const appUrl = (
-      process.env.QUARZION_APP_URL ?? "https://app.quarzion.com"
+      process.env.QUARZION_APP_URL ?? "https://app.windcall.cn"
     ).replace(/\/$/, "");
     const invitationUrl = `${appUrl}/invite/${rawToken}`;
     let sealed: Awaited<ReturnType<typeof sealInvitationEmail>>;
@@ -612,7 +612,7 @@ export async function POST(request: NextRequest) {
       Date.now() + 7 * 24 * 60 * 60 * 1000,
     ).toISOString();
     const appUrl = (
-      process.env.QUARZION_APP_URL ?? "https://app.quarzion.com"
+      process.env.QUARZION_APP_URL ?? "https://app.windcall.cn"
     ).replace(/\/$/, "");
     const invitationUrl = `${appUrl}/invite/${rawToken}`;
     let sealed: Awaited<ReturnType<typeof sealInvitationEmail>>;

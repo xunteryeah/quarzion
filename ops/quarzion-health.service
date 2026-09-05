@@ -1,5 +1,5 @@
 [Unit]
-Description=Quarzion production health check
+Description=WindCall production health check
 After=docker.service network-online.target
 OnFailure=quarzion-alert@%n.service
 

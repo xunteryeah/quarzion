@@ -13,18 +13,18 @@ export async function generateMetadata(): Promise<Metadata> {
     (host.startsWith("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
   return {
-    title: "Quarzion Admin｜内部运营系统",
+    title: "WindCall Admin｜内部运营系统",
     description:
       "管理客户项目、豆包、千问与 DeepSeek 官方 API 任务、异常和审计记录。",
     icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
     openGraph: {
-      title: "Quarzion Admin",
+      title: "WindCall Admin",
       description: "GEO 官方 API 监测运营后台",
       images: [`${origin}/og-admin-light.png`],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Quarzion Admin",
+      title: "WindCall Admin",
       description: "GEO 官方 API 监测运营后台",
       images: [`${origin}/og-admin-light.png`],
     },

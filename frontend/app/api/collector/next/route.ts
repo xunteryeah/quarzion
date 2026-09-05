@@ -84,12 +84,13 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ error: "未授权" }, { status: 401 });
   await ensureDatabase();
   const workerId = normalizeWorkerId(
+    request.headers.get("x-windcall-worker-id") ??
     request.headers.get("x-quarzion-worker-id") ??
       request.nextUrl.searchParams.get("workerId"),
   );
   if (!workerId)
     return NextResponse.json(
-      { error: "缺少有效的 x-quarzion-worker-id" },
+      { error: "缺少有效的 x-windcall-worker-id" },
       { status: 400 },
     );
   const worker = await env.DB.prepare(

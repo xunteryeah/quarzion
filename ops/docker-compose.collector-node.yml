@@ -4,7 +4,7 @@ services:
     container_name: quarzion-collector
     restart: unless-stopped
     environment:
-      QUARZION_API_BASE: ${QUARZION_API_BASE:-https://quarzion.com}
+      QUARZION_API_BASE: ${QUARZION_API_BASE:-https://api.windcall.cn}
       GEO_PROOF_INGEST_KEY: ${GEO_PROOF_INGEST_KEY:?GEO_PROOF_INGEST_KEY is required}
       COLLECTOR_WORKER_ID: ${COLLECTOR_WORKER_ID:?COLLECTOR_WORKER_ID is required}
       COLLECTOR_LABEL: ${COLLECTOR_LABEL:-Shanghai official API worker}

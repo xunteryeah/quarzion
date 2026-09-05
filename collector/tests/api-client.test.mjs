@@ -40,7 +40,7 @@ test("官方 API Worker 按平台轮询并声明能力范围", async () => {
       requests[1].url,
       "https://quarzion.test/api/collector/next?platform=qwen",
     );
-    assert.equal(requests[1].init.headers["X-Quarzion-Worker-Id"], "worker-01");
+    assert.equal(requests[1].init.headers["X-WindCall-Worker-Id"], "worker-01");
   } finally {
     globalThis.fetch = originalFetch;
   }

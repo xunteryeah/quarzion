@@ -72,7 +72,7 @@ export async function enqueueContactEmail(payload: ContactPayload) {
   await env.DB.prepare(`INSERT INTO email_outbox
       (id,kind,reference_id,recipient_email,payload_ciphertext,payload_iv,status,attempt_count,max_attempts,next_attempt_at,last_error,delivered_at,created_at,updated_at)
       VALUES (?,'contact',?,?,?,?,'pending',0,8,?,NULL,NULL,?,?)`)
-    .bind(`email-${crypto.randomUUID()}`, payload.id, process.env.QUARZION_CONTACT_EMAIL ?? "unconfigured@quarzion.invalid", sealed.ciphertext, sealed.iv, now, now, now).run();
+    .bind(`email-${crypto.randomUUID()}`, payload.id, process.env.QUARZION_CONTACT_EMAIL ?? "unconfigured@windcall.invalid", sealed.ciphertext, sealed.iv, now, now, now).run();
 }
 
 function html(value: string) {
@@ -84,15 +84,15 @@ function messageFor(payload: EmailPayload) {
     return {
       to: process.env.QUARZION_CONTACT_EMAIL ?? "",
       replyTo: payload.email,
-      subject: `[Quarzion 官网] ${payload.company} 预约产品演示`,
+      subject: `[WindCall 官网] ${payload.company} 预约产品演示`,
       html: `<h2>新的产品演示咨询</h2><p><b>姓名：</b>${html(payload.name)}</p><p><b>公司：</b>${html(payload.company)}</p><p><b>邮箱：</b>${html(payload.email)}</p><p><b>电话：</b>${html(payload.phone || "未填写")}</p><p><b>需求：</b></p><p>${html(payload.message).replace(/\n/g, "<br>")}</p><hr><small>提交编号：${html(payload.id)}</small>`,
     };
   }
   const role = payload.role === "organization_admin" ? "组织管理员" : payload.role === "viewer" ? "只读访客" : "成员";
   return {
     to: payload.email,
-    subject: `邀请你加入 ${payload.organizationName} 的 Quarzion 工作空间`,
-    html: `<h2>加入 Quarzion</h2><p>你已被邀请以“${html(role)}”身份加入 <b>${html(payload.organizationName)}</b>。</p><p><a href="${html(payload.invitationUrl)}">接受邀请并设置密码</a></p><p>该一次性链接将在 ${html(new Date(payload.expiresAt).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" }))} 失效。若你不认识邀请方，请忽略此邮件。</p>`,
+    subject: `邀请你加入 ${payload.organizationName} 的 WindCall 工作空间`,
+    html: `<h2>加入 WindCall</h2><p>你已被邀请以“${html(role)}”身份加入 <b>${html(payload.organizationName)}</b>。</p><p><a href="${html(payload.invitationUrl)}">接受邀请并设置密码</a></p><p>该一次性链接将在 ${html(new Date(payload.expiresAt).toLocaleString("zh-CN", { timeZone: "Asia/Shanghai" }))} 失效。若你不认识邀请方，请忽略此邮件。</p>`,
   };
 }
 

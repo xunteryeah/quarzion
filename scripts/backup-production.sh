@@ -29,7 +29,7 @@ cleanup_failed() {
   if [[ ${status} -ne 0 ]]; then
     printf '{"level":"error","event":"backup_failed","status":%d,"time":"%s"}\n' "${status}" "$(date -u +%FT%TZ)" >&2
     if [[ -x "${script_dir}/notify-alert.sh" ]]; then
-      "${script_dir}/notify-alert.sh" "Quarzion production backup failed (${status})" || true
+      "${script_dir}/notify-alert.sh" "WindCall production backup failed (${status})" || true
     fi
   fi
   exit "${status}"

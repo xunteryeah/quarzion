@@ -122,7 +122,7 @@ export async function generateMonitoringRuns(options: { now?: Date; projectId?: 
           const uniqueKey = `schedule:${runDate}:${schedule.projectId}:${prompt.id}:${capability.provider}:${capability.modelId}:${mode}`;
           statements.push(env.DB.prepare(`INSERT OR IGNORE INTO runs
             (id,organization_id,project_id,prompt_id,platform,region,model_version,model_tier,response_mode,collector_version,execution_mode,source_url,scheduled_at,status,attempt,unique_run_key,priority,max_attempts,created_at)
-            VALUES (?,?,?,?,?,'CN',?,?,?,'quarzion-api-worker/2.0.0','official_api',?,?,'queued',1,?,50,?,?)`)
+            VALUES (?,?,?,?,?,'CN',?,?,?,'windcall-api-worker/2.0.0','official_api',?,?,'queued',1,?,50,?,?)`)
             .bind(`run-${crypto.randomUUID()}`, schedule.organizationId, schedule.projectId, prompt.id, capability.provider, capability.modelId, capability.tier, mode, PLATFORM_PROFILES[capability.provider].url, now, uniqueKey, policyMap.get(capability.provider)?.maxAttempts ?? 3, now));
         }
       }

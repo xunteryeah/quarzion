@@ -1,5 +1,5 @@
 [Unit]
-Description=Run Quarzion monitoring scheduler every five minutes
+Description=Run WindCall monitoring scheduler every five minutes
 
 [Timer]
 OnBootSec=2min

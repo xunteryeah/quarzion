@@ -85,11 +85,11 @@ local_status() {
   local host="$1" path="$2"
   curl --silent --show-error --max-time 20 --output /dev/null --write-out '%{http_code}' --resolve "${host}:443:127.0.0.1" "https://${host}${path}"
 }
-[[ "$(local_status quarzion.com /)" == "200" ]]
-[[ "$(local_status app.quarzion.com /login)" == "200" ]]
-[[ "$(local_status app.quarzion.com /api/dashboard)" == "401" ]]
-[[ "$(local_status api.quarzion.com /api/health)" == "200" ]]
-[[ "$(local_status admin.quarzion.com /)" == "401" ]]
+[[ "$(local_status windcall.cn /)" == "200" ]]
+[[ "$(local_status app.windcall.cn /login)" == "200" ]]
+[[ "$(local_status app.windcall.cn /api/dashboard)" == "401" ]]
+[[ "$(local_status api.windcall.cn /api/health)" == "200" ]]
+[[ "$(local_status admin.windcall.cn /)" == "401" ]]
 "${quarzion_root}/scripts/health-check.sh"
 
 trap - EXIT

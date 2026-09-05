@@ -11,14 +11,14 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
   const url = `${protocol}://${host}/dashboard`;
   const image = `${protocol}://${host}/og.png`;
-  const title = "Quarzion｜监测与效果证明系统";
+  const title = "WindCall｜监测与效果证明系统";
   const description = "客户工作台：查看 AI 平台中的品牌可见度、原始回答、引用来源与优化前后效果。";
   return {
     title,
     description,
     alternates: { canonical: url },
     robots: { index: false, follow: false },
-    openGraph: { title, description, type: "website", url, images: [{ url: image, width: 1200, height: 630, alt: "Quarzion 客户工作台" }] },
+    openGraph: { title, description, type: "website", url, images: [{ url: image, width: 1200, height: 630, alt: "WindCall 客户工作台" }] },
     twitter: { card: "summary_large_image", title, description, images: [image] },
   };
 }

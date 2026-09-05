@@ -12,7 +12,7 @@ const config = {
   secret: process.env.GEO_PROOF_INGEST_KEY || "",
   workerId: process.env.COLLECTOR_WORKER_ID || "collector-cn-shanghai-01",
   label: process.env.COLLECTOR_LABEL || "Shanghai official API worker",
-  collectorVersion: `quarzion-api-worker/${process.env.COLLECTOR_VERSION || "2.0.0"}`,
+  collectorVersion: `windcall-api-worker/${process.env.COLLECTOR_VERSION || "2.0.0"}`,
   pollMs: Math.max(1_000, Number(process.env.COLLECTOR_POLL_MS || 5_000)),
   platforms: configuredPlatforms.length ? configuredPlatforms : PROVIDERS,
 };
@@ -67,4 +67,3 @@ while (!stopping) {
 }
 
 log("worker_stopped");
-

@@ -6,7 +6,7 @@ import { DatabaseSync } from "node:sqlite";
 const frontendUrl = (process.env.QUARZION_VERIFY_FRONTEND_URL ?? "http://frontend:3000").replace(/\/$/, "");
 const adminUrl = (process.env.QUARZION_VERIFY_ADMIN_URL ?? "http://admin:3001").replace(/\/$/, "");
 const databasePath = process.env.QUARZION_VERIFY_DB_PATH ?? "/data/quarzion.sqlite";
-const adminHeaders = { "x-quarzion-admin": "1" };
+const adminHeaders = { "x-windcall-admin": "1" };
 const nonce = `${Date.now()}-${crypto.randomUUID().slice(0, 8)}`;
 
 const created = {
@@ -200,7 +200,7 @@ try {
   created.userIds.push(accepted.json.user.id);
   const setCookie = accepted.response.headers.get("set-cookie") ?? "";
   const cookie = setCookie.split(";", 1)[0];
-  assert.match(cookie ?? "", /^quarzion_session=/);
+  assert.match(cookie ?? "", /^windcall_session=/);
   assert.match(setCookie, /;\s*HttpOnly/i);
   assert.match(setCookie, /;\s*Secure/i);
   assert.match(setCookie, /;\s*SameSite=Lax/i);

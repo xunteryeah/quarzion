@@ -13,12 +13,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const page = marketingPageMap.get(slug.join("/"));
-  if (!page) return { title: "页面不存在｜Quarzion", robots: { index: false, follow: false } };
+  if (!page) return { title: "页面不存在｜WindCall", robots: { index: false, follow: false } };
   const requestHeaders = await headers();
   const host = requestHeaders.get("x-forwarded-host") ?? requestHeaders.get("host") ?? "localhost:3000";
   const protocol = requestHeaders.get("x-forwarded-proto") ?? (host.includes("localhost") ? "http" : "https");
   const url = `${protocol}://${host}/${page.path}`;
-  const title = `${page.title}${page.emphasis ? page.emphasis : ""}｜Quarzion`;
+  const title = `${page.title}${page.emphasis ? page.emphasis : ""}｜WindCall`;
   return {
     title,
     description: page.summary,

@@ -1,5 +1,5 @@
 [Unit]
-Description=Quarzion production health check every five minutes
+Description=WindCall production health check every five minutes
 
 [Timer]
 OnBootSec=2m
